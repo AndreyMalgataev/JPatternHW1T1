@@ -17,9 +17,13 @@ public class PersonBuilder {
         return this;
     }
 
-    public PersonBuilder setAge(int age) {
-        this.age = age;
-        return this;
+    public PersonBuilder setAge(int age) throws IllegalArgumentException {
+        if (age > 0) {
+            this.age = age;
+            return this;
+        } else {
+            throw new IllegalArgumentException("Возраст недопустимый");
+        }
     }
 
     public PersonBuilder setAddress(String address) {
@@ -32,15 +36,13 @@ public class PersonBuilder {
         return this;
     }
 
-    public Person build() throws IllegalCallerException {
+    public Person build() throws IllegalStateException {
         if (name != null && surname != null && age >= 0) {
             Person person = new Person(name, surname, age);
             if (address != null) person.setAddress(address);
             return person;
-        } else if (age < 0) {
-            throw new IllegalCallerException("Возраст недопустимый");
         } else {
-            throw new IllegalCallerException("Не хватает обязательных полей");
+            throw new IllegalStateException("Не хватает обязательных полей");
         }
 
     }
